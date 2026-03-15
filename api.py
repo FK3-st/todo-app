@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from todo.core import Todolist
-from todo.storage import load, save
+from todo.storage import load, save, init_db
 
 
-
+init_db()
 app = FastAPI()
 todo = Todolist()
 
