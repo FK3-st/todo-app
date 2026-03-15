@@ -1,32 +1,23 @@
-import json
-from pathlib import Path
+import sqlite3
 
-FILE = Path("tasks.json")
+DB = "todo.db"
 
+def get_connection():
+    return sqlite3.connect(DB)
 
-def save(tasks, next_id):
+def init_db():
+    with get_connection() as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                task TEXT NOT NULL,
+                done INTEGER NOT NULL DEFAULT 0
+            )
+        """)
 
-    data = {
-        "next_id" : next_id,
-        "tasks" : tasks
-    }
-    
-    with open(FILE, "w") as f:
-        json.dump(data, f)
-
-    if isinstance(data, list):
-        return data, len(data) + 1
-
-    return data["tasks"],data["next_id"]
-
+def save(tasks, next_id=None):
+    pass
 
 def load():
-
-    if not FILE.exists():
-        return [], 1
-
-    with open(FILE) as f:
-        data = json.load(f)
-
-    return data["tasks"], data["next_id"]
+    return [], 1
 
