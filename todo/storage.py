@@ -26,10 +26,17 @@ def save(tasks, next_id=None):
             )
 
 def load():
-    def load():
     with get_connection() as conn:
         cursor = conn.execute("SELECT id, task, done FROM tasks")
         rows = cursor.fetchall()
-    return [{"id": rows[0], "task":rows[1], "done":bool(rows[2])}], max(id) + 1
+        for row in rows:
+            tasks = {"id": rows[0], 
+                     "task":rows[1], 
+                     "done":bool(rows[2])
+                }
+
+        next_id = max(row[0] for in rows) + 1 if rows else 1
+
+    return tasks, next_id
 
 
